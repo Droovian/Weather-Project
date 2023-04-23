@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Weather App</title>
-  </head>
-  <body>
-    <form action="/" method="post">
-      <label for="cityInput">City Name: </label>
-      <input id="cityInput" type="text" name="cityName">
-      <button type="submit">Check</button>
-    </form>
-  </body>
+<html>
+
+<head>
+  <title>Weather App</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <form action="/" method="POST">
+    <input type="text" name="cityName" placeholder="Enter City Name">
+    <button type="submit">Get Weather</button>
+  </form>
+
+  <div id="weather-details">
+  </div>
+
+  <script>
+    $(function() {
+  $('form').submit(function(e) {
+    e.preventDefault();
+    $.post('/', $(this).serialize(), function(data) {
+      console.log(data);
+      $('#weather-details').empty();
+      $('#weather-details').append('<p>The weather is currently ' + data.description + '</p>');
+      $('#weather-details').append('<h1>The temperature in ' + $('input[name=cityName]').val() + ' is ' + data.temperature + '</h1>');
+      $('#weather-details').append('<img src="' + data.iconUrl + '">');
+    }, 'json');
+  });
+});
+
+  </script>
+</body>
+
 </html>
